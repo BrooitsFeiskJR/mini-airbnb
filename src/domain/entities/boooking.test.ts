@@ -63,4 +63,20 @@ describe("Booking Entity", () => {
     expect(booking.getTotalPrice).toBe(150 * 4);
   });
 
+  it("should not make an appointment when a property is not available", () => {
+    // Arrange
+    const property = new Property(1, "Property 1", "Description of property 1", 5, 150, "house");
+    const user = new User("1", "John Doe")
+    const dateRange = new DateRange(new Date("2021-01-10"), new Date("2021-01-14"));
+    const booking = new Booking(1, property, user, dateRange, 4)
+    const dateRange2 = new DateRange(new Date("2021-01-13"), new Date("2021-01-18"));
+
+
+    // Act
+    expect(() => {
+      new Booking(2, property, user, dateRange2, 4)
+    }).toThrow("The property is not available for the selected period");
+  });
+
+
 });

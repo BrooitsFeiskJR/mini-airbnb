@@ -2,87 +2,87 @@ import { DateRange } from "../value_objects/date_range";
 import { Booking } from "./booking";
 
 export class Property {
-    private readonly id: number;
-    private readonly name: string;
-    private readonly description: string;
-    private readonly maxGuests: number;
-    private readonly basePricePerNight: number;
-    private readonly type: string;
-    private readonly bookings: Booking[] = [];
+  private readonly id: number;
+  private readonly name: string;
+  private readonly description: string;
+  private readonly maxGuests: number;
+  private readonly basePricePerNight: number;
+  private readonly type: string;
+  private readonly bookings: Booking[] = [];
 
-    constructor(id: number, name: string, description: string, maxGuests: number, basePricePerNight: number, type: string) {
-        this.validateFields(name, maxGuests);
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.maxGuests = maxGuests;
-        this.basePricePerNight = basePricePerNight;
-        this.type = type;
+  constructor(id: number, name: string, description: string, maxGuests: number, basePricePerNight: number, type: string) {
+    this.validateFields(name, maxGuests);
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.maxGuests = maxGuests;
+    this.basePricePerNight = basePricePerNight;
+    this.type = type;
+  }
+
+  private validateFields(name: string, maxGuests: number): void {
+    if (maxGuests <= 0) {
+      throw new Error("Max guests must be greater than 0");
+    }
+    if (name === "") {
+      throw new Error("Property name cannot be empty");
+    }
+  }
+
+  validateGuestCount(count: number): void {
+    if (count > this.maxGuests) {
+      throw new Error("Guest count exceeds max guest count");
+    }
+  }
+
+  calculateTotalPrice(dateRange: DateRange): number {
+    const totalNights = dateRange.getTotalNights();
+    let totalPrice = totalNights * this.basePricePerNight;
+
+    if (totalNights >= 7) {
+      totalPrice *= 0.9;
     }
 
-    private validateFields(name: string, maxGuests: number): void {
-        if (maxGuests <= 0) {
-            throw new Error("Max guests must be greater than 0");
-        }
-        if (name === "") {
-            throw new Error("Property name cannot be empty");
-        }
-    }
+    return totalPrice;
+  }
 
-    validateGuestCount(count: number): void {
-        if (count > this.maxGuests) {
-            throw new Error("Guest count exceeds max guest count");
-        }
-    }
+  isAvailable(dateRange: DateRange): boolean {
+    return !this.bookings.some(
+      (booking) =>
+        booking.getStatus === "CONFIRMED" &&
+        booking.getDateRange.overLaps(dateRange)
+    );
+  }
 
-    calculateTotalPrice(dateRange: DateRange): number {
-        const totalNights = dateRange.getTotalNights();
-        let totalPrice = totalNights * this.basePricePerNight;
+  addBooking(booking: Booking): void {
+    this.bookings.push(booking);
+  }
 
-        if (totalNights >= 7) {
-            totalPrice *= 0.9;
-        }
+  get getBookings(): Booking[] {
+    return [...this.bookings];
+  }
 
-        return totalPrice;
-    }
+  get getId(): number {
+    return this.id;
+  }
 
-    isAvailable(dateRange: DateRange): boolean {
-        return !this.bookings.some(
-            (booking) => 
-            booking.getStatus === "CONFIRMED" &&
-            booking.getDateRange.overLaps(dateRange)
-        );
-    }
+  get getName(): string {
+    return this.name;
+  }
 
-    addBooking(booking: Booking): void {
-        this.bookings.push(booking);
-    }
+  get getDescription(): string {
+    return this.description;
+  }
 
-    get getBookings(): Booking[] {
-        return [...this.bookings];
-    }
+  get getMaxGuests(): number {
+    return this.maxGuests;
+  }
 
-    get getId(): number {
-        return this.id;
-    }
+  get getBasePricePerNight(): number {
+    return this.basePricePerNight;
+  }
 
-    get getName(): string {
-        return this.name;
-    }
-
-    get getDescription(): string {
-        return this.description;
-    }
-
-    get getMaxGuests(): number {
-        return this.maxGuests;
-    }
-
-    get getBasePricePerNight(): number {
-        return this.basePricePerNight;
-    }
-
-    get getType(): string {
-        return this.type;
-    }    
+  get getType(): string {
+    return this.type;
+  }
 }
