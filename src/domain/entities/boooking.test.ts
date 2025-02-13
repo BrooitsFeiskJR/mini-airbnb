@@ -18,4 +18,14 @@ describe("Booking Entity", () => {
         expect(booking.getGuestCount).toBe(2);
         expect(booking.getStatus).toBe("CONFIRMED")
     });
+
+    it("should throw an error if the number of guest is zero or negative", () => {
+        const property = new Property(1, "Property 1", "Description of property 1", 5, 150, "house");
+        const user = new User("1", "John Doe")
+        const dateRange = new DateRange(new Date("2021-01-10"), new Date("2021-01-15"));
+
+        expect(() => {
+            new Booking(1, property, user, dateRange, 0)
+        }).toThrow("The number of guest must be greater than zero")
+    });
 });

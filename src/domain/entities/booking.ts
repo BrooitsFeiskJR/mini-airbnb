@@ -17,6 +17,9 @@ export class Booking {
         dateRange: DateRange,
         guestCount: number,
     ) {
+        if (guestCount <= 0) {
+            throw new Error("The number of guest must be greater than zero")
+        }
         this.id = id;
         this.property = property;
         this.user = user;
