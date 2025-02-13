@@ -8,7 +8,7 @@ export class User {
         this.name = name;
     }
 
-    validateFields(id: string, name: string): void {
+    private validateFields(id: string, name: string): void {
         if (id === "") {
             throw new Error("id should not be empty");
         }
