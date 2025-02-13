@@ -5,14 +5,18 @@ export class DateRange {
   private readonly endDate: Date;
 
   constructor(startDate: Date, endDate: Date) {
+    this.validateDateRange(startDate, endDate);
+    this.startDate = startDate;
+    this.endDate = endDate;
+  }
+
+  private validateDateRange(startDate: Date, endDate: Date): void {
     if (endDate < startDate) {
         throw new Error("end date should not be lower than startDate");
     }
     if (startDate === endDate) {
         throw new Error("start date and end date should not be the same");
     }
-    this.startDate = startDate;
-    this.endDate = endDate;
   }
 
   getStartDate(): Date {
