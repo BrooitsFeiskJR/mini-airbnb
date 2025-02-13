@@ -27,6 +27,8 @@ export class Booking {
         this.guestCount = guestCount;
 
         property.addBooking(this);
+        property.validateGuestCount(this.guestCount)
+
     }
 
     get getId(): number {
