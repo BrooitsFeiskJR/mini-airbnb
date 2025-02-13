@@ -1,5 +1,5 @@
-import { Property } from "../domain/entities/property";
-import { PropertyRepository } from "../domain/repositories/propery_repository";
+import { Property } from "../../domain/entities/property";
+import { PropertyRepository } from "../../domain/repositories/propery_repository";
 
 export class PropertyService {
   private readonly propertyRepository: PropertyRepository
