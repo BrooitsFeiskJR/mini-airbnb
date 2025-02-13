@@ -7,39 +7,46 @@ export class Booking {
     private readonly property: Property;
     private readonly user: User;
     private readonly dateRange: DateRange;
-    private readonly guestCount: number
+    private readonly guestCount: number;
+    private readonly status: "CONFIRMED" | "CANCELLED" = "CONFIRMED"
 
     constructor(
         id: number,
         property: Property,
         user: User,
         dateRange: DateRange,
-        guestCount: number
+        guestCount: number,
     ) {
         this.id = id;
         this.property = property;
         this.user = user;
         this.dateRange = dateRange;
         this.guestCount = guestCount;
+
+        property.addBooking(this);
     }
 
-    getId(): number {
+    get getId(): number {
         return this.id;
     }
 
-    getProperty(): Property {
+    get getProperty(): Property {
         return this.property;
     }
 
-    getUser(): User {
+    get getUser(): User {
         return this.user;
     }
 
-    getDateRange(): DateRange {
+    get getDateRange(): DateRange {
         return this.dateRange;
     }
 
-    getGuestCount(): number {
+    get getGuestCount(): number {
         return this.guestCount;
+    }
+
+    get getStatus(): "CONFIRMED" | "CANCELLED" {
+        return this.status
     }
 }
