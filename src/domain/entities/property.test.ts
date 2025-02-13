@@ -1,5 +1,7 @@
 import { Property } from './property';
 import { DateRange } from '../value_objects/date_range';
+import { Booking } from './booking';
+import { User } from './user';
 
 describe('Property Entity', () => {
     it("should create a property", () => {
@@ -47,4 +49,29 @@ describe('Property Entity', () => {
         const totalPrice = property.calculateTotalPrice(dateRange);
         expect(totalPrice).toBe(630); // 7 nights * 100 / 10% discount = 630 
     });
-});  
+
+    it("should check if the property is available for the given date range", () => {
+        const user = new User("1", "John Doe");
+        const property = new Property(1, "Property 1", "Description of property 1", 2, 1000, "house");
+        
+        const dateRange = new DateRange(new Date("2024-12-20"), new Date("2024-12-25"));
+        const dateRange2 = new DateRange(new Date("2024-12-22"), new Date("2024-12-27"));
+        const dateRange3 = new DateRange(new Date("2024-12-15"), new Date("2024-12-19"));
+
+        new Booking(1, property, user, dateRange, 2);
+
+        expect(property.isAvailable(dateRange)).toBe(false);
+        expect(property.isAvailable(dateRange2)).toBe(false);
+        expect(property.isAvailable(dateRange3)).toBe(true);
+    });
+
+    it("should test with the booking is push to the list of bookings", () => {
+        const user = new User("1", "John Doe");
+        const property = new Property(1, "Property 1", "Description of property 1", 2, 1000, "house");
+        const dateRange = new DateRange(new Date("2024-12-20"), new Date("2024-12-25"));
+
+        const booking = new Booking(1, property, user, dateRange, 2);
+
+        expect(property.getBookings).toContain(booking);
+    });
+});     
