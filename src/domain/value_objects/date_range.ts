@@ -6,10 +6,10 @@ export class DateRange {
 
   constructor(startDate: Date, endDate: Date) {
     if (endDate < startDate) {
-      throw new Error("end date should not be lower the startDate")
-    } 
-    if (endDate == startDate) {
-      throw new Error("end date should not be the same as the startDate")
+        throw new Error("end date should not be lower than startDate");
+    }
+    if (startDate === endDate) {
+        throw new Error("start date and end date should not be the same");
     }
     this.startDate = startDate;
     this.endDate = endDate;
