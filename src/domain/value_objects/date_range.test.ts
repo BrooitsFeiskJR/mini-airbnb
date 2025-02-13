@@ -12,7 +12,7 @@ describe('DateRange Value Object', () => {
   it('should throw an error if finish date is before start date', () => {
     expect(() => {
       new DateRange(new Date('2024-12-25'), new Date('2024-12-20'));
-    }).toThrow("end date should not be lower the startDate");
+    }).toThrow("end date should not be lower than startDate");
   });
 
   it('should calculate the total of nights between two dates', () => {
@@ -43,6 +43,6 @@ describe('DateRange Value Object', () => {
     const date = new Date('2024-12-20');
     expect(() => {
       new DateRange(date, date);
-    }).toThrow("end date should not be lower the startDate");
+    }).toThrow("start date and end date should not be the same");
   });
 });
