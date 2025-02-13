@@ -3,55 +3,61 @@ import { User } from "./user";
 import { DateRange } from "../value_objects/date_range";
 
 export class Booking {
-    private readonly id: number;
-    private readonly property: Property;
-    private readonly user: User;
-    private readonly dateRange: DateRange;
-    private readonly guestCount: number;
-    private readonly status: "CONFIRMED" | "CANCELLED" = "CONFIRMED"
+  private readonly id: number;
+  private readonly property: Property;
+  private readonly user: User;
+  private readonly dateRange: DateRange;
+  private readonly guestCount: number;
+  private readonly status: "CONFIRMED" | "CANCELLED" = "CONFIRMED";
+  private readonly totalPrice: number;
 
-    constructor(
-        id: number,
-        property: Property,
-        user: User,
-        dateRange: DateRange,
-        guestCount: number,
-    ) {
-        if (guestCount <= 0) {
-            throw new Error("The number of guest must be greater than zero")
-        }
-        this.id = id;
-        this.property = property;
-        this.user = user;
-        this.dateRange = dateRange;
-        this.guestCount = guestCount;
-
-        property.addBooking(this);
-        property.validateGuestCount(this.guestCount)
-
+  constructor(
+    id: number,
+    property: Property,
+    user: User,
+    dateRange: DateRange,
+    guestCount: number,
+  ) {
+    if (guestCount <= 0) {
+      throw new Error("The number of guest must be greater than zero")
     }
+    this.id = id;
+    this.property = property;
+    this.user = user;
+    this.dateRange = dateRange;
+    this.guestCount = guestCount;
+    this.totalPrice = property.calculateTotalPrice(dateRange)
 
-    get getId(): number {
-        return this.id;
-    }
+    property.addBooking(this);
+    property.validateGuestCount(this.guestCount)
 
-    get getProperty(): Property {
-        return this.property;
-    }
+  }
 
-    get getUser(): User {
-        return this.user;
-    }
+  get getTotalPrice(): number {
+    return this.totalPrice;
+  }
 
-    get getDateRange(): DateRange {
-        return this.dateRange;
-    }
+  get getId(): number {
+    return this.id;
+  }
 
-    get getGuestCount(): number {
-        return this.guestCount;
-    }
+  get getProperty(): Property {
+    return this.property;
+  }
 
-    get getStatus(): "CONFIRMED" | "CANCELLED" {
-        return this.status
-    }
+  get getUser(): User {
+    return this.user;
+  }
+
+  get getDateRange(): DateRange {
+    return this.dateRange;
+  }
+
+  get getGuestCount(): number {
+    return this.guestCount;
+  }
+
+  get getStatus(): "CONFIRMED" | "CANCELLED" {
+    return this.status
+  }
 }
