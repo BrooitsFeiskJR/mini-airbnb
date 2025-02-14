@@ -26,7 +26,7 @@ export class BookingService {
     }
     const guest = await this.userService.findUserById(dto.guestId);
     if (!guest) {
-      throw new Error("User not found");
+      throw new Error("User not found.");
     }
 
     const booking = new Booking(
