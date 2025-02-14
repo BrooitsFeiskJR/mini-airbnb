@@ -18,7 +18,6 @@ export class BookingService {
     this.dateRange = dateRange;
   }
 
-
   async createBooking(dto: CreateBookingDTO): Promise<Booking> {
     const property = await this.propertyService.findPropertyById(dto.propertyId);
     if (!property) {
