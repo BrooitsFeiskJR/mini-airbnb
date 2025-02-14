@@ -9,11 +9,13 @@ export class BookingService {
   private readonly bookingRepository: BookingRepository;
   private readonly propertyService: PropertyService;
   private readonly userService: UserService;
+  private readonly dateRange: DateRange;
 
-  constructor(bookingRepository: BookingRepository, propertyService: PropertyService, userService: UserService) {
+  constructor(bookingRepository: BookingRepository, propertyService: PropertyService, userService: UserService, dateRange: DateRange) {
     this.bookingRepository = bookingRepository;
     this.propertyService = propertyService;
     this.userService = userService;
+    this.dateRange = dateRange;
   }
 
 
@@ -26,14 +28,12 @@ export class BookingService {
     if (!guest) {
       throw new Error("User not found");
     }
-    // TODO: Refactoring to mock the date range.
-    const dateRange = new DateRange(dto.startDate, dto.endDate);
 
     const booking = new Booking(
       1,
       property,
       guest,
-      dateRange,
+      this.dateRange,
       dto.guestCount
     );
 

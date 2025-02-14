@@ -5,6 +5,7 @@ import { BookingService } from "../services/booking_service"
 import { FakeBookingRepository } from "../../infrastructure/repositories/fake_booking_repository"
 import { PropertyService } from "./property_service"
 import { UserService } from "./user_service"
+import { DateRange } from "../../domain/value_objects/date_range";
 
 jest.mock("./user_service")
 jest.mock("./property_service")
@@ -14,20 +15,24 @@ describe("Booking Service", () => {
   let bookingService: BookingService;
   let mockPropertyService: jest.Mocked<PropertyService>;
   let mockUserService: jest.Mocked<UserService>;
+  let mockDateRange: jest.Mocked<DateRange>;
 
   beforeEach(() => {
     const mockPropertyRepository = {} as any;
     const mockUserRepository = {} as any;
+    const mockStartDate = {} as any;
+    const mockEndDate = {} as any;
 
     mockPropertyService = new PropertyService(mockPropertyRepository) as jest.Mocked<PropertyService>;
     mockUserService = new UserService(mockUserRepository) as jest.Mocked<UserService>;
-
+    mockDateRange = new DateRange(mockStartDate, mockEndDate) as jest.Mocked<DateRange>;
 
     fakeBookingRepository = new FakeBookingRepository();
     bookingService = new BookingService(
       fakeBookingRepository,
       mockPropertyService,
-      mockUserService
+      mockUserService,
+      mockDateRange
     );
 
   })
@@ -45,6 +50,14 @@ describe("Booking Service", () => {
       getId: jest.fn().mockReturnValue("1"),
     } as any;
 
+    const mockDateRange = {
+      validateDateRange: jest.fn(),
+      getStartDate: jest.fn().mockReturnValue(new Date("2024-12-20")),
+      getEndDate: jest.fn().mockReturnValue(new Date("2024-12-25")),
+      getTotalNights: jest.fn().mockReturnValue(5),
+      overLaps: jest.fn().mockReturnValue(false)
+    }
+
     const bookingDTO: CreateBookingDTO = {
       propertyId: 1,
       guestId: "1",
@@ -55,6 +68,8 @@ describe("Booking Service", () => {
 
     mockPropertyService.findPropertyById.mockResolvedValue(mockProperty);
     mockUserService.findUserById.mockResolvedValue(mockUser);
+    mockDateRange.getStartDate.mockResolvedValue(mockDateRange);
+    mockDateRange.getEndDate.mockResolvedValue(mockDateRange);
 
     const result: Booking = await bookingService.createBooking(bookingDTO);
 
