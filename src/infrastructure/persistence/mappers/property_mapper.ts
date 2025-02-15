@@ -20,6 +20,7 @@ export class PropertyMapper {
     propertyEntity.description = entity.getDescription;
     propertyEntity.basePricePerNight = entity.getBasePricePerNight;
     propertyEntity.maxGuests = entity.getMaxGuests;
+    propertyEntity.bookings = [];
     return propertyEntity;
   }
 }
