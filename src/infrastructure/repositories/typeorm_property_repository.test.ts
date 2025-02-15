@@ -45,4 +45,26 @@ describe("TypeORM Property Repository", () => {
     const savedProperty = repository.findOne({ where: { id: 1 } });
     expect(savedProperty).not.toBeNull();
   });
+
+  it("should return a property entity with valid id", async () => {
+    const property = new Property(
+      1,
+      "House",
+      "Description",
+      6,
+      200,
+      "House"
+    );
+
+    await propertyRepository.save(property);
+    const savedProperty = await propertyRepository.findPropertyById(1);
+    expect(savedProperty).not.toBeNull();
+    expect(savedProperty?.getId).toBe(1);
+    expect(savedProperty?.getName).toBe("House");
+  });
+
+  it("should return a property entity with invalid id", async () => {
+    const property = await propertyRepository.findPropertyById(222);
+    expect(property).toBeNull();
+  });
 });
