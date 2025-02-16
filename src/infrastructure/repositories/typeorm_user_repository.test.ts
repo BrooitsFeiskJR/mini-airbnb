@@ -16,7 +16,6 @@ describe("TypeORM User Repository", () => {
         entities: [UserEntity],
         synchronize: true,
         logging: false,
-
       }
     );
     await dataSource.initialize();
